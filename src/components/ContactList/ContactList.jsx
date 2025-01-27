@@ -3,25 +3,20 @@ import Contact from "../Contact/Contact";
 import s from "../ContactList/ContactList.module.css";
 import { deleteContact, fetchContacts } from "../../redux/contactsOps";
 import { useEffect } from "react";
-import {
-  selectContacts,
-  selectError,
-  selectLoading,
-} from "../../redux/contactsSlice";
-import { setFilter } from "../../redux/filtersSlice";
+import { selectError, selectLoading } from "../../redux/contactsSlice";
+import { selectFilteredContacts } from "../../redux/selectors";
 
 const ContactList = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
-  const contacts = useSelector(selectContacts);
 
   const loading = useSelector(selectLoading);
 
   const error = useSelector(selectError);
-  const filters = useSelector(setFilter);
 
+  const filteredContacts = useSelector(selectFilteredContacts);
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -35,17 +30,15 @@ const ContactList = () => {
 
   return (
     <ul className={s.contactList}>
-      {contacts
-        .filter((contact) => contact)
-        .map(({ id, name, number }) => (
-          <Contact
-            key={id}
-            id={id}
-            name={name}
-            number={number}
-            onDelete={handleDelete}
-          />
-        ))}
+      {filteredContacts.map(({ id, name, number }) => (
+        <Contact
+          key={id}
+          id={id}
+          name={name}
+          number={number}
+          onDelete={handleDelete}
+        />
+      ))}
     </ul>
   );
 };
