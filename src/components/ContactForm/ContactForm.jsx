@@ -3,15 +3,17 @@ import * as Yup from "yup";
 import s from "../ContactForm/ContactForm.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import { addContact } from "../../redux/contactsOps";
+import { selectContacts } from "../../redux/contactsSlice";
 
 const ContactForm = () => {
   const dispatch = useDispatch();
 
-  const contacts = useSelector((state) => state.contacts.items);
+  const contacts = useSelector(selectContacts);
 
   const handleSubmit = (values, { resetForm }) => {
     const isDublicate = contacts.some(
-      (contact) => contact.name.toLowerCase() === values.name.toLowerCase()
+      (contact) =>
+        contact.name && contact.name.toLowerCase() === values.name.toLowerCase()
     );
     if (isDublicate) {
       {

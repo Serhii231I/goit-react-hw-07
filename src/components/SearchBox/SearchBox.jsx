@@ -5,7 +5,7 @@ const SearchBox = () => {
   const dispatch = useDispatch();
 
   const handleChange = (event) => {
-    dispatch(setFilter(event.target.value));
+    dispatch(setFilter(event.target.value || ""));
   };
   return (
     <div className={s.searchContainer}>
